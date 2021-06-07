@@ -1,0 +1,68 @@
+*, html {
+    padding: 0;
+    margin: 0;
+}
+body {
+    height: 100%;
+    width: 100%;
+    direction: rtl;
+    font-family: 'Cairo', sans-serif !important;
+}
+a {
+    text-decoration: none !important;
+    color: black !important;
+}
+.form {
+    padding: 15px;
+    background: #f8f9fa;
+    max-width: 500px;
+    border-radius: 7px;
+    box-shadow: 0px -1px 13px 3px #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5%;
+}
+.form label {
+    display: block;
+    margin-bottom: 2%;
+}
+.form form {
+    width: 100%;
+}
+.form form input[type="number"] {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #CCC;
+    outline: none;
+}
+.suggestions {
+    padding: 15px;
+    width: 95%;
+    margin-top: 5%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 5px;
+    /* box-shadow: 0px 5px 13px 3px #f1f1f1; */
+}
+.suggestions .card {
+    background: transparent;
+}
+.list-group .list-group-item {
+    width: 13.75rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+    .suggestions .col-lg-2 {
+        display: flex;
+        justify-content: center;
+    }
+}
