@@ -13,10 +13,10 @@
           <a class="nav-link" href="search.php">صفحة البحث</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">جميع الجامعات</a>
+          <a class="nav-link" href="all-univ.php">جميع الجامعات</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">جميع الكليات</a>
+          <a class="nav-link" href="all-fac.php">جميع الكليات</a>
         </li>
       </ul>
     </div>
