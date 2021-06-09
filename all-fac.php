@@ -12,20 +12,31 @@
         <div class="container">
             <p style="font-size: 18px;font-weight: bold;">الكليات المتاحة</p>
             <div class="row" style="gap:10px">
-                <div class="col-lg-2">
-                    <a href="#">
-                        <div class="card" style="width: 13.75rem;padding:5px;">
-                            <img src="layout/img/logo-alex.webp" class="card-img-top" alt="..." style="width: 165px;object-fit: contain;height: 165px;display:block;margin-right:auto;margin-left:auto">
-                            <div class="card-body">
-                                <h5 class="card-title">كلية تجارة</h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item" style="background:transparent !important;font-size: 14px;width: 13.75rem;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">الجامعة :</li>
-                                <li class="list-group-item" style="background:transparent !important;font-size: 14px;width: 13.75rem;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">المكان المختصر :</li>
-                            </ul>
+                <div class="row" style="gap:10px">
+                    <?php
+                    $sql = "SELECT * FROM faculty ORDER BY id DESC";
+                    $query = $connect->query($sql);
+                    $query->setFetchMode(PDO::FETCH_ASSOC);
+                    while ($row = $query->fetch()) {
+                        $id = $row['id'];
+                        $name = $row['name'];
+                        $img = $row['img'];
+                    ?>
+                        <div class="col-lg-2">
+                            <a href="faculty.php?f=<?php echo "$id"?>">
+                                <div class="card" style="width: 13.75rem;padding:5px;">
+                                    <img src="<?php echo "$img"?>" class="card-img-top" alt="<?php echo "$name"?>" style="width: 165px;object-fit: contain;height: 165px;display:block;margin-right:auto;margin-left:auto">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo "$name"?></h5>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </a>
+                    <?php
+                    }
+                    ?>
                 </div>
+
             </div>
         </div>
     </main>

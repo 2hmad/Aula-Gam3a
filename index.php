@@ -12,15 +12,23 @@
     <div class="form">
         <form method="post" action="">
             <label for="total">أدخل مجموعك</label>
-            <input type="number" id="total" name="total" step="0.01">
+            <input type="number" id="total" name="total" step="0.01" required>
             <input type="submit" class="btn btn-primary" name="find" value="بـحـث" style="display: block;margin-top: 5%;margin-right: auto;margin-left: auto;">
         </form>
+        <?php
+        if (isset($_POST['find'])) {
+            $total = $_POST['total'];
+            header('Location: result.php?t=' . $total);
+        }
+        ?>
     </div>
 
     <div class="suggestions">
 
         <div class="container">
-            <p style="text-align:center;font-weight: bold;font-size:17px">الجامعات المقترحة</p>
+            <a href="all-univ.php">
+                <p style="text-align:center;font-weight: bold;font-size:17px">تصفح الجامعات</p>
+            </a>
             <div class="row" style="gap: 15px">
                 <?php
                 $sql = "SELECT * FROM university ORDER BY RAND() LIMIT 5";
@@ -51,8 +59,10 @@
             </div>
         </div>
 
-        <div class="container" style="border-top: 1px solid #dadada;margin-top:3%">
-            <p style="text-align:center;font-weight: bold;font-size:17px;margin-top:3%">الكليات المقترحة</p>
+        <div class="container" style="margin-top:3%">
+            <a href="all-fac.php">
+                <p style="text-align:center;font-weight: bold;font-size:17px">تصفح الكليات</p>
+            </a>
             <div class="row" style="gap: 15px">
                 <?php
                 $sql = "SELECT * FROM faculty ORDER BY RAND() LIMIT 5";

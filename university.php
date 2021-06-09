@@ -2,8 +2,35 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <title>جامعه الاسكندرية | أولي جامعه</title>
     <?php include('./includes/links.php') ?>
+
+    <?php
+    if (isset($_GET['u'])) {
+        $u = $_GET['u'];
+        $sql = "SELECT * FROM university WHERE id=$u";
+        $query = $connect->query($sql);
+        $query->setFetchMode(PDO::FETCH_ASSOC);
+        while ($row = $query->fetch()) {
+            $id = $row['id'];
+            $name = $row['name'];
+            $address = $row['long_address'];
+            $url = $row['site_url'];
+            $description = $row['description'];
+            $img = $row['img'];
+        }
+    } else {
+        header('Location: all-univ.php');
+    }
+    ?>
+
+    <title><?php echo "$name" ?> | أولي جامعه</title>
+    <meta name="description" content="<?php echo "$description" ?>">
+    <meta property="og:url" content="<?php echo $_SERVER['REQUEST_URI'] ?>" />
+    <meta property="og:title" content="<?php echo "$name" ?>" />
+    <meta property="og:description" content="<?php echo "$description" ?>" />
+    <meta property="og:image" content="<?php echo "$img" ?>" />
+
+
     <style>
         .name-univ-head {
             background-color: #4a4a4a;
@@ -40,24 +67,6 @@
     <main style="margin-top:3%;">
         <div class="container">
             <div class="row">
-                <?php
-                if (isset($_GET['u'])) {
-                    $u = $_GET['u'];
-                    $sql = "SELECT * FROM university WHERE id=$u";
-                    $query = $connect->query($sql);
-                    $query->setFetchMode(PDO::FETCH_ASSOC);
-                    while ($row = $query->fetch()) {
-                        $id = $row['id'];
-                        $name = $row['name'];
-                        $address = $row['long_address'];
-                        $url = $row['site_url'];
-                        $description = $row['description'];
-                        $img = $row['img'];
-                    }
-                } else {
-                    header('Location: all-univ.php');
-                }
-                ?>
                 <div class="col-lg-10">
                     <div class="name-univ-head">
                         <p style="font-size: 18px;font-weight: bold;"><?php echo "$name" ?></p>
@@ -89,7 +98,7 @@
                                 $img = $row['img'];
                             ?>
                                 <div class="col-lg-3">
-                                    <a href="#">
+                                    <a href="faculty.php?f=<?php echo "$id" ?>">
                                         <div class="card" style="width: 13.75rem;padding:5px;">
                                             <img src="<?php echo "$img" ?>" class="card-img-top" alt="<?php echo "$name" ?>" style="width: 165px;object-fit: contain;height: 165px;display:block;margin-right:auto;margin-left:auto">
                                             <div class="card-body">
@@ -118,32 +127,31 @@
                             <p style="font-size: 18px;font-weight: bold;">الجامعات الاخري</p>
                         </div>
                         <?php
-                            $sql = "SELECT * FROM faculty WHERE university_id=$u";
-                            $query = $connect->query($sql);
-                            $query->setFetchMode(PDO::FETCH_ASSOC);
-                            while ($row = $query->fetch()) {
-                                $id = $row['id'];
-                                $name = $row['name'];
-                                $price = $row['price'];
-                                $min = $row['minimum_total'];
-                                $img = $row['img'];
-                            }
+                        $sql = "SELECT * FROM university ORDER BY RAND() LIMIT 3";
+                        $query = $connect->query($sql);
+                        $query->setFetchMode(PDO::FETCH_ASSOC);
+                        while ($row = $query->fetch()) {
+                            $id = $row['id'];
+                            $name = $row['name'];
+                            $img = $row['img'];
                         ?>
-
-                        <a href="#">
-                            <div class="card mb-3 border-0">
-                                <div class="row g-0">
-                                    <div class="col-md-4" style="display: flex;">
-                                        <img src="https://alexu.edu.eg/templates/alexandriauniversity/images/logo-alex-en.webp" alt="..." style="width:100%;object-fit:contain">
-                                    </div>
-                                    <div class="col">
-                                        <div class="card-body">
-                                            <h5 class="card-title">جامعه الاسكندرية</h5>
+                            <a href="university.php?u=<?php echo "$id" ?>">
+                                <div class="card mb-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-4" style="display: flex;">
+                                            <img src="<?php echo "$img" ?>" alt="<?php echo "$name" ?>" style="width:100%;object-fit:contain">
+                                        </div>
+                                        <div class="col">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?php echo "$name" ?></h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        <?php
+                        }
+                        ?>
 
                     </div>
                 </div>
