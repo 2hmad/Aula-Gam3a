@@ -2,18 +2,22 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <title>أولي جامعه - طريقك الافضل لأختيار جامعتك</title>
+    <title>أولي جامعة - قارن بين الكليات - عليك السعي وعلي الله التوفيق</title>
     <?php include('./includes/links.php') ?>
 </head>
 
 <body>
     <?php include('./includes/navbar.php') ?>
-
-    <div class="form">
+    
+    <br>
+    
+    <div class="form m-2 rounded border" style="margin-right: auto !important;margin-left: auto !important;">
         <form method="post" action="">
-            <label for="total">أدخل مجموعك</label>
-            <input type="number" id="total" name="total" step="0.01" required>
-            <input type="submit" class="btn btn-primary" name="find" value="بـحـث" style="display: block;margin-top: 5%;margin-right: auto;margin-left: auto;">
+            <label for="total" class="fw-bold my-2"> 
+              ابحث عن الكليات المتاحة لك من مجموعك 
+            </label>
+            <input type="number" id="total" name="total" step="0.01" style="direction : rlt;text-align : right"  placeholder = "اكتب النسبة المئوية لمجوعك" required>
+            <input type="submit" class="btn btn-secondary" name="find" value="دووس" style="display: block;margin-top: 5%;margin-right: auto;margin-left: auto;">
         </form>
         <?php
         if (isset($_POST['find'])) {
@@ -22,12 +26,14 @@
         }
         ?>
     </div>
-
+    
     <div class="suggestions">
 
         <div class="container">
             <a href="all-univ.php">
-                <p style="text-align:center;font-weight: bold;font-size:17px">تصفح الجامعات</p>
+                <h3 class="heading text-dark fw-bold">
+                  تصفح الجامعات
+                </h3> 
             </a>
             <div class="row" style="gap: 15px">
                 <?php
@@ -38,30 +44,40 @@
                     $id = $row['id'];
                     $name = $row['name'];
                     $img = $row['img'];
+                    $type = $row['type'];
                     $address = $row['short_address'];
                 ?>
-                    <div class="col-lg-2">
-                        <a href="university.php?u=<?php echo "$id" ?>">
-                            <div class="card" style="width: 13.75rem;padding:5px;">
-                                <img src="<?php echo "$img" ?>" class="card-img-top" alt="<?php echo "$name" ?>" style="width: 165px;object-fit: contain;height: 165px;display:block;margin-right:auto;margin-left:auto">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo "$name" ?></h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item" style="background:transparent !important;font-size: 14px;width: 13.75rem;    display: inline-block;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;">العنوان : <?php echo "$address" ?></li>
-                                </ul>
-                            </div>
-                        </a>
-                    </div>
+                    <a class="rounded m-1 mx-0" href="university.php?u=<?php echo "$id" ?>">
+                          
+                      <div class="row border mx-0">
+                        
+                          <div class="col-9 bg-gray">
+                            <h5 class="pt-2 w-100"><?php echo "$name" ?></h5>
+                            <p class="text-dark"><i class="fas fa-map-pin" style="color:#ca0000"></i><?php echo "$address - $type" ?></p>
+                          </div>
+                          
+                          <div class ="col m-0 p-0">
+                            <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="min-width: 100%;max-width: 100%;max-height: 150px;">
+                          </div> 
+                          
+                      </div>
+                      
+                    </a>
                 <?php
                 }
                 ?>
+                
+                <a class="fw-bold text-center my-3" href="all-univ.php">
+                  عرض كل الجامعات
+                </a>
             </div>
         </div>
 
         <div class="container" style="margin-top:3%">
             <a href="all-fac.php">
-                <p style="text-align:center;font-weight: bold;font-size:17px">تصفح الكليات</p>
+                <h3 class="heading text-dark fw-bold">
+                  تصفح الكليات
+                </h3>
             </a>
             <div class="row" style="gap: 15px">
                 <?php
@@ -75,24 +91,40 @@
                     $price = $row['price'];
                     $min = $row['minimum_total'];
                 ?>
-                    <div class="col-lg-2">
-                        <a href="faculty.php?f=<?php echo "$id" ?>">
-                            <div class="card" style="width: 13.75rem;padding:5px;">
-                                <img src="<?php echo "$img" ?>" class="card-img-top" alt="<?php echo "$name" ?>" style="width: 165px;object-fit: contain;height: 165px;display:block;margin-right:auto;margin-left:auto">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo "$name" ?></h5>
+
+                    <a class="border bg-gray rounded m-1" href="faculty.php?f=<?php echo "$id" ?>">
+                        <div class="card mb-3 border-0 px-0">
+                            <div class="row px-0">
+                                <div class="col px-0">
+                                    <div class="card-body p-0">
+                                        <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" class ="d-block m-auto" style="max-width: 100%;max-height: 310px;">
+                                        <h5 class="card-title p-1"><?php echo "$name" ?></h5>
+                                        <span class="card-text text-dark p-1" style="font-size: 15px;"><i class="fas fa-money-bill-wave"></i> المصاريف  : <?php
+                                        if($price == "") {
+                                            echo "غير محدد";
+                                        } else {
+                                            echo number_format($price) . " جنية /سنة";
+                                        }?></span>
+                                        <p class="card-text text-dark p-1" style="font-size: 15px;"><i class="fas fa-percent"></i> الحد الادني : <?php 
+                                        if($min == "") {
+                                            echo "غير محدد";
+                                        } else {
+                                            echo "$min%";
+                                        }
+                                        ?></p>
+                                    </div>
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item" style="background:transparent !important;font-size: 14px;width: 13.75rem;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">المصاريف الدراسية : <?php echo "$price" ?></li>
-                                    <li class="list-group-item" style="background:transparent !important;font-size: 14px;width: 13.75rem;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">الحد الادني : <?php echo "$min" ?></li>
-                                </ul>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 <?php
                 }
                 ?>
-
+                
+                <a class="fw-bold text-center my-3" href="all-fac.php">
+                  عرض كل الكليات
+                </a>
+                
             </div>
         </div>
 

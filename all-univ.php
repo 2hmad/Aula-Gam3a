@@ -22,16 +22,21 @@
                     $img = $row['img'];
                     $address = $row['short_address'];
                 ?>
-                    <div class="col-lg-2">
-                        <a href="university.php?u=<?php echo "$id" ?>">
-                            <div class="card" style="width: 13.75rem;padding:5px;min-height: 250px;">
-                                <img src="<?php echo "$img" ?>" class="card-img-top" alt="<?php echo "$name" ?>" style="width: 165px;object-fit: contain;height: 165px;display:block;margin-right:auto;margin-left:auto">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo "$name" ?></h5>
+                    <a href="university.php?u=<?php echo "$id" ?>">
+                        <div class="card mb-3 border-0">
+                            <div class="row g-0">
+                                <div class="col-md-1">
+                                    <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="width: 110px;height: 110px;object-fit: contain;">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo "$name" ?></h5>
+                                        <p class="card-text"><i class="fas fa-map-pin" style="color:#ca0000"></i> العنوان : <?php echo "$address" ?></p>
+                                    </div>
                                 </div>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 <?php
                 }
                 ?>

@@ -26,7 +26,20 @@
     }
     ?>
 
-    <title><?php echo "$name" ?> | أولي جامعه</title>
+    <title> 
+    <?php 
+      if($price !== "") {
+        echo "$price / سنه ";
+      } 
+    ?> 
+    - 
+    <?php 
+      if($min !== "") {
+        echo  "$min%";
+      } 
+      ?>
+      - 
+      <?= $name ?> | أولي جامعه</title>
     <meta property="og:url" content="<?php echo $_SERVER['REQUEST_URI'] ?>" />
     <meta property="og:title" content="<?php echo "$name" ?>" />
     <meta property="og:image" content="<?php echo "$img" ?>" />
@@ -50,7 +63,7 @@
         .faculty-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .faculty-desc {
@@ -59,6 +72,18 @@
 
         .faculty-field {
             margin-top: 5%;
+        }
+        .hideContent {
+            overflow: hidden;
+            line-height: 1.5em;
+            height: 3em;
+        }
+        .showContent {
+            line-height: 1.5em;
+            height: auto;
+        }
+        .showContent{
+            height: auto;
         }
     </style>
 </head>
@@ -73,34 +98,48 @@
                         <p style="font-size: 18px;font-weight: bold;"><?php echo "$name" ?></p>
                     </div>
                     <div class="faculty-info">
-                        <img src="<?php echo "$img" ?>" alt="<?php echo "$name" ?>" style="height: 200px;width: 200px;object-fit: contain;">
+                        <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="height: 200px;width: 180px;object-fit: contain;">
                         <div style="line-height: 1em;">
-                            <h5 style="font-weight: bold"><?php echo "$name" ?></h5>
                             <?php
                             $sql_unv = "SELECT * FROM university WHERE id=$univ_id";
                             $query_unv = $connect->query($sql_unv);
                             $query_unv->setFetchMode(PDO::FETCH_ASSOC);
                             while ($row_unv = $query_unv->fetch()) {
-                                $id_unv = $row_unv['id'];
-                                $name_unv = $row_unv['name'];
-                                $address = $row_unv['long_address'];
+                                $id_unv        = $row_unv['id'];
+                                $name_unv      = $row_unv['name'];
+                                $description   = $row_unv['description'];
+                                $type          = $row_unv['type']; 
+                                $hotel_price   = $row_unv['hotel_price'];
+                                $short_address = $row_unv['short_address'];
+                                $address       = $row_unv['long_address'];
                             }
                             ?>
-                            <p><i class="fas fa-university"></i> <a href="university.php?u=<?php echo "$id_unv" ?>"><?php echo "$name_unv" ?></a></p>
-                            <p>الحد الادني : <?php echo "$min" ?></p>
-                            <p>المصاريف : <?php echo "$price" ?> جنيه</p>
+                            <p class="p-1 m-1 bg-muted rounded" ><i class="fas fa-university"></i> <a class="text-primary" href="university.php?u=<?php echo "$id_unv" ?>"><?php echo "$name_unv" ?></a></p>
+                            <p class="p-1 m-1 bg-muted rounded fw-bold"><?= $type ?></p>
+                            <p class="p-1 m-1 bg-muted rounded"><i class="fas fa-map-pin"></i> <?= $short_address ?></p>
+                            <p class="p-1 m-1 bg-muted rounded"> الحد الادني : <?php if($min == "") { echo "غير محدد"; } else { echo "$min%"; } ?></p>
+                            <p class="p-1 m-1 bg-muted rounded"><i class="fas fa-money-bill-wave"></i> <?php if($price == "") { echo "غير محدد"; } else { echo "$price / سنه "; } ?></p>
                         </div>
                     </div>
                     <div class="faculty-desc">
-                        <span style="font-weight: bold;display:block">معلومات عن الكلية</span>
+                        <h2  style="color: #C97D60 ;font-weight: bold;display:block"><i class="fas fa-info-circle"></i> معلومات عن الجامعة</h3>
                         <br>
-                        <p>العنوان بالكامل : <?php echo "$address" ?></p>
-                        <p>سعر السكن الجامعي : <?php echo "$price" ?> جنيه</p>
-                        <p class="text-muted"></p>
+                        <p>
+                          <i class="fas fa-map-pin" style="color:#ca0000"></i> 
+                          <?php echo "$address" ?>
+                        </p>
+                        <div class="university-desc">
+                          </span class ="fw-bold" ><i class="fas fa-info-circle"></i> الوصف </span>
+                          <div class="text-muted content hideContent"><?php echo "$description" ?></div>
+                          <div class="show-more p-1" style="background: var(--light);text-decoration: underline"><a href="#">رؤية المزيد</a></div>
+                        </div>
+                    </div>
+                    <div class="faculty-desc">
+                        <span style="font-weight: bold;display:block"><i class="fas fa-house-user"></i> معلومات عن السكن الجامعي</span>
+                        <br>
+                        <p><?php echo $hotel_price ?></p>
                     </div>
                     <div class="faculty-field">
-                        <span style="font-weight: bold;display:block">مجال الدراسة</span>
-                        <br>
                         <?php
                         $sql_unv = "SELECT * FROM science_field WHERE id=$field_id";
                         $query_unv = $connect->query($sql_unv);
@@ -110,8 +149,14 @@
                             $description_field = $row_unv['description'];
                         }
                         ?>
-                        <p>مجال الدراسة : <?php echo "$name_field" ?></p>
-                        <p style="text-decoration:underline">الوصف :</p>
+                        <h2 style="color: #C97D60 ;font-weight: bold;display:block">
+                          <i class="fas fa-atom"></i> اية هي 
+                          <?php echo "$name_field" ?>
+                          ؟ 
+                        </h2> 
+                                             
+                    </div>
+                    <div class="faculty-desc">
                         <p class="text-muted"><?php echo "$description_field" ?></p>
                     </div>
 
@@ -131,16 +176,32 @@
                             $id = $row['id'];
                             $name = $row['name'];
                             $img = $row['img'];
+                            $price = $row['price'];
+                            $min = $row['minimum_total'];
                         ?>
-                            <a href="faculty.php?f=<?php echo "$id" ?>">
-                                <div class="card mb-3 border-0">
+                            <a class="rounded border m-2" href="faculty.php?f=<?php echo "$id" ?>">
+                                <div class="card border-0">
                                     <div class="row g-0">
-                                        <div class="col-md-4" style="display: flex;">
-                                            <img src="<?php echo "$img" ?>" alt="<?php echo "$name" ?>" style="width:100%;object-fit:contain">
+                                        <div class="col-2 col-md-4" style="display: flex;">
+                                            <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="width:100%;object-fit:contain">
                                         </div>
                                         <div class="col">
                                             <div class="card-body">
-                                                <h5 class="card-title"><?php echo "$name" ?></h5>
+                                                <h6 class="card-title"><?php echo "$name" ?></h6>
+                                                <span class="card-text text-dark" style="font-size: 15px;"><i class="fas fa-money-bill-wave"></i> المصاريف  : <?php
+                                                  if($price == "") {
+                                                      echo "غير محدد";
+                                                  } else {
+                                                      echo number_format($price) . " جنية /سنة";
+                                                  }?></span>
+                                                  <p class="card-text text-dark" style="font-size: 15px;"><i class="fas fa-percent"></i> الحد الادني : <?php 
+                                                    if($min == "") {
+                                                        echo "غير محدد";
+                                                    } else {
+                                                        echo "$min%";
+                                                    }
+                                                    ?>
+                                                  </p> 
                                             </div>
                                         </div>
                                     </div>
@@ -155,7 +216,27 @@
             </div>
         </div>
     </main>
+    
     <?php include('./includes/scripts.php') ?>
+    <?php include('./includes/footer.php') ?>
+    
+    <script>
+    $(".show-more a").on("click", function() {
+    var $this = $(this); 
+    var $content = $this.parent().prev("div.content");
+    var linkText = $this.text().toUpperCase();    
+    
+    if(linkText === "رؤية المزيد"){
+        linkText = "رؤية اقل";
+        $content.addClass('showContent').removeClass('hideContent');
+    } else {
+        linkText = "رؤية المزيد";
+        $content.addClass('hideContent').removeClass('showContent');
+    };
+
+    $this.text(linkText);
+    });
+    </script>
 </body>
 
 </html>

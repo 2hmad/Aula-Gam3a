@@ -1,0 +1,16 @@
+
+RewriteEngine On
+
+
+# force ssl
+
+ErrorDocument 404 /
+ErrorDocument 500 "<h3>Sorry, Please refresh the page many times ^_^</h3>"
+ErrorDocument 403 /
+ErrorDocument 400 /
+ErrorDocument 401 /
+
+
+
+
+

@@ -14,9 +14,11 @@
             $id = $row['id'];
             $name = $row['name'];
             $address = $row['long_address'];
+            $short_address = $row['short_address'];
             $url = $row['site_url'];
             $description = $row['description'];
             $img = $row['img'];
+            $type = $row['type'];
         }
     } else {
         header('Location: all-univ.php');
@@ -59,6 +61,19 @@
         .releated {
             margin-top: 5%;
         }
+        .hideContent {
+            overflow: hidden;
+            line-height: 1.5em;
+            height: 3em;
+        }
+        .showContent {
+            line-height: 1.5em;
+            height: auto;
+        }
+        .showContent{
+            height: auto;
+        }
+
     </style>
 </head>
 
@@ -74,15 +89,18 @@
                     <div class="university-info">
                         <img src="<?php echo "$img" ?>" style="height: 200px;width: 200px;object-fit: contain;">
                         <div>
-                            <h5 style="font-weight: bold"><?php echo "$name" ?></h5>
-                            <p>العنوان بالكامل : <?php echo "$address" ?></p>
-                            <a href="<?php echo "$url" ?>" style="text-decoration: underline !important" target="_blank">موقع الجامعه</a>
+                            <p class = "bg-muted p-1 rounded"><i class="fas fa-map-pin" style="color:#ca0000"></i><?php echo "$short_address" ?></p>
+                            <p class = "bg-muted p-1 rounded"><i class="fas fa-university"></i> النوع : <?php echo "$type" ?></p>
+                            <a href="<?php echo "$url" ?>" style="text-decoration: underline !important" target="_blank"><i class="fas fa-globe"></i> موقع الجامعه</a>
                         </div>
                     </div>
+
                     <div class="university-desc">
-                        <span style="font-weight: bold;">الوصف</span>
-                        <p class="text-muted"><?php echo "$description" ?></p>
+                        <span style="font-weight: bold;"><i class="fas fa-info-circle"></i>  الوصف</span>
+                        <div class="text-muted content hideContent"><?php echo "$description" ?></div>
+                        <div class="show-more" style="text-decoration: underline"><a href="#">رؤية المزيد</a></div>
                     </div>
+                    
                     <div class="releated">
                         <span style="font-weight: bold;">الكليات المتاحة</span>
                         <div class="row" style="gap: 15px">
@@ -97,20 +115,33 @@
                                 $min = $row['minimum_total'];
                                 $img = $row['img'];
                             ?>
-                                <div class="col-lg-3">
-                                    <a href="faculty.php?f=<?php echo "$id" ?>">
-                                        <div class="card" style="width: 13.75rem;padding:5px;">
-                                            <img src="<?php echo "$img" ?>" class="card-img-top" alt="<?php echo "$name" ?>" style="width: 165px;object-fit: contain;height: 165px;display:block;margin-right:auto;margin-left:auto">
+                            <a href="faculty.php?f=<?php echo "$id" ?>">
+                                <div class="card mb-3 border bg-gray">
+                                    <div class="row g-0">
+                                        <div class="col-md-1">
+                                            <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="width: 100%;height: 100%;object-fit: contain;">
+                                        </div>
+                                        <div class="col-md-8">
                                             <div class="card-body">
                                                 <h5 class="card-title"><?php echo "$name" ?></h5>
+                                                <span class="card-text text-dark" style="font-size: 15px;"><i class="fas fa-money-bill-wave"></i> المصاريف الدراسية : <?php
+                                                if($price == "") {
+                                                    echo "غير محدد";
+                                                } else {
+                                                    echo number_format($price) . " جنيه";
+                                                }?></span>
+                                                <p class="card-text text-dark" style="font-size: 15px;"><i class="fas fa-percent"></i> الحد الادني : <?php 
+                                                if($min == "") {
+                                                    echo "غير محدد";
+                                                } else {
+                                                    echo "$min%";
+                                                }
+                                                ?></p>
                                             </div>
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item" style="background:transparent !important;font-size: 14px;width: 13.75rem;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">المصاريف الدراسية : <?php echo "$price" ?></li>
-                                                <li class="list-group-item" style="background:transparent !important;font-size: 14px;width: 13.75rem;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">الحد الادني : <?php echo "$min" ?></li>
-                                            </ul>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
+                            </a>
                             <?php
                             }
                             ?>
@@ -134,16 +165,17 @@
                             $id = $row['id'];
                             $name = $row['name'];
                             $img = $row['img'];
+                            $type = $row['type'];
                         ?>
                             <a href="university.php?u=<?php echo "$id" ?>">
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4" style="display: flex;">
-                                            <img src="<?php echo "$img" ?>" alt="<?php echo "$name" ?>" style="width:100%;object-fit:contain">
+                                            <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="width:100%;max-height:300px;object-fit:contain">
                                         </div>
                                         <div class="col">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><?php echo "$name" ?></h5>
+                                            <div class="card-body bg-gray">
+                                                <h6 class="card-title"><?php echo "$name - $type"  ?></h6>
                                             </div>
                                         </div>
                                     </div>
@@ -158,7 +190,27 @@
             </div>
         </div>
     </main>
+    
     <?php include('./includes/scripts.php') ?>
+    <?php include('./includes/footer.php') ?>
+   
+    <script>
+    $(".show-more a").on("click", function() {
+    var $this = $(this); 
+    var $content = $this.parent().prev("div.content");
+    var linkText = $this.text().toUpperCase();    
+    
+    if(linkText === "رؤية المزيد"){
+        linkText = "رؤية اقل";
+        $content.addClass('showContent').removeClass('hideContent');
+    } else {
+        linkText = "رؤية المزيد";
+        $content.addClass('hideContent').removeClass('showContent');
+    };
+
+    $this.text(linkText);
+    });
+    </script>
 </body>
 
 </html>
