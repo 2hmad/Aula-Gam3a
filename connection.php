@@ -18,6 +18,25 @@ $connect = new PDO(
 //     $password,
 //     );
 
-ob_start();
-session_start();
-?>
+@ob_start();
+@session_start();
+
+//Function 
+function price_format($price) {
+  
+  if($price == "")
+  {
+    
+    return "غير محدد"; 
+    
+  } else if (!is_numeric($price) ) {
+    
+    return $price; 
+    
+  } else{
+    
+    return number_format($price)  . " / سنه ";
+    
+  }
+  
+}

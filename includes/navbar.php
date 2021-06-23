@@ -18,7 +18,9 @@
           <a class="nav-link" href="all-univ.php">جميع الجامعات</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="all-fac.php">جميع الكليات</a>
+          <a class="nav-link" href="/">
+            اعرف كليتك من مجموعك 
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="about.php">اعرفنا</a>
@@ -31,14 +33,15 @@
     </div>
   </div>
   
-  <div class ="text-centet border-top m-3">
-    <a class="mx-3" href="search.php">
-          صفحة البحث
-    </a>
-    - 
-    <a class="mx-3" href="/">
-          اعرف كليتك من مجموعك 
-    </a>
-  </div>
-  
 </nav>
+
+<div class ="m-2">
+  <div class ="alert alert-warning rounded text-centet m-auto" >
+   <p class = "py-2">
+    مساحة اعلانية. 
+     <a href = "https://t.me/hitham44">
+       تواصل للحجز 
+     </a>
+   </p>
+  </div>
+</div>

@@ -31,6 +31,14 @@ a {
   padding-right : 5px;
 }
 
+.dots{
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+
+
 /* color scema */
 .bg-gray{
   background : #F8F9FA;

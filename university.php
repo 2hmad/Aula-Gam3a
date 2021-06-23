@@ -6,7 +6,7 @@
 
     <?php
     if (isset($_GET['u'])) {
-        $u = $_GET['u'];
+        $u = filter_var($_GET['u'], FILTER_SANITIZE_NUMBER_INT ) ;;
         $sql = "SELECT * FROM university WHERE id=$u";
         $query = $connect->query($sql);
         $query->setFetchMode(PDO::FETCH_ASSOC);
@@ -26,10 +26,10 @@
     ?>
 
     <title><?php echo "$name" ?> | أولي جامعه</title>
-    <meta name="description" content="<?php echo "$description" ?>">
+    <meta name="description" content="<?= $name . '-' . $type . '-' . $address ?>">
     <meta property="og:url" content="<?php echo $_SERVER['REQUEST_URI'] ?>" />
     <meta property="og:title" content="<?php echo "$name" ?>" />
-    <meta property="og:description" content="<?php echo "$description" ?>" />
+    <meta property="og:description" content="<?= $name . '-' . $type . '-' . $address ?>" />
     <meta property="og:image" content="<?php echo "$img" ?>" />
 
 
@@ -41,7 +41,7 @@
             margin-bottom: 2%;
         }
 
-        .name-univ-head p {
+        .name-univ-head h1, h3{
             border-right: 15px solid #e83c32;
             border-top-right-radius: 10px;
             margin: 0;
@@ -83,8 +83,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10">
-                    <div class="name-univ-head">
-                        <p style="font-size: 18px;font-weight: bold;"><?php echo "$name" ?></p>
+                    <div class="name-univ-head ">
+                        <h1 style="font-size: 18px;font-weight: bold;"><?php echo "$name" ?></h1>
                     </div>
                     <div class="university-info">
                         <img src="<?php echo "$img" ?>" style="height: 200px;width: 200px;object-fit: contain;">
@@ -97,7 +97,7 @@
 
                     <div class="university-desc">
                         <span style="font-weight: bold;"><i class="fas fa-info-circle"></i>  الوصف</span>
-                        <div class="text-muted content hideContent"><?php echo "$description" ?></div>
+                        <div class="text-muted content hideContent"><?= $description ?></div>
                         <div class="show-more" style="text-decoration: underline"><a href="#">رؤية المزيد</a></div>
                     </div>
                     
@@ -124,12 +124,10 @@
                                         <div class="col-md-8">
                                             <div class="card-body">
                                                 <h5 class="card-title"><?php echo "$name" ?></h5>
-                                                <span class="card-text text-dark" style="font-size: 15px;"><i class="fas fa-money-bill-wave"></i> المصاريف الدراسية : <?php
-                                                if($price == "") {
-                                                    echo "غير محدد";
-                                                } else {
-                                                    echo number_format($price) . " جنيه";
-                                                }?></span>
+                                                <span class="card-text text-dark" style="font-size: 15px;"><i class="fas fa-money-bill-wave"></i>
+                                                  المصاريف الدراسية : 
+                                                  <?= price_format($price); ?>
+                                                </span>
                                                 <p class="card-text text-dark" style="font-size: 15px;"><i class="fas fa-percent"></i> الحد الادني : <?php 
                                                 if($min == "") {
                                                     echo "غير محدد";
@@ -155,23 +153,24 @@
                 <div class="col-lg">
                     <div class="card" style="border:none">
                         <div class="name-univ-head">
-                            <p style="font-size: 18px;font-weight: bold;">الجامعات الاخري</p>
+                            <h3 style="font-size: 18px;font-weight: bold;">الجامعات الاخري</h3>
                         </div>
                         <?php
-                        $sql = "SELECT * FROM university ORDER BY RAND() LIMIT 3";
+                        $sql = "SELECT * FROM university ORDER BY RAND() LIMIT 10";
                         $query = $connect->query($sql);
                         $query->setFetchMode(PDO::FETCH_ASSOC);
                         while ($row = $query->fetch()) {
                             $id = $row['id'];
                             $name = $row['name'];
                             $img = $row['img'];
+                            $science_field_id = $row['science_field_id'];
                             $type = $row['type'];
                         ?>
                             <a href="university.php?u=<?php echo "$id" ?>">
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4" style="display: flex;">
-                                            <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="width:100%;max-height:300px;object-fit:contain">
+                                            <img onerror="this.src='/imgs/<?= $science_field_id ?>.jpg';" src="<?php echo "$img";  ?>" alt="<?php echo "$name" ?>" style="width:100%;max-height:300px;object-fit:contain">
                                         </div>
                                         <div class="col">
                                             <div class="card-body bg-gray">

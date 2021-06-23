@@ -19,23 +19,23 @@
                 while ($row = $query->fetch()) {
                     $id = $row['id'];
                     $name = $row['name'];
+                    $type= $row['type'];
                     $img = $row['img'];
                     $address = $row['short_address'];
                 ?>
-                    <a href="university.php?u=<?php echo "$id" ?>">
-                        <div class="card mb-3 border-0">
-                            <div class="row g-0">
-                                <div class="col-md-1">
-                                    <img src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="width: 110px;height: 110px;object-fit: contain;">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?php echo "$name" ?></h5>
-                                        <p class="card-text"><i class="fas fa-map-pin" style="color:#ca0000"></i> العنوان : <?php echo "$address" ?></p>
-                                    </div>
-                                </div>
-                            </div>
+                  <a class="rounded m-1 mx-0 border-bottom" href="university.php?u=<?php echo "$id" ?>">
+                      
+                      <div class="row">
+                        
+                        <div class "col-3" >
+                          <img class=" rounded " src="<?php if($img == ""){ echo "layout/img/university_placeholder.jpg"; }else{ echo "$img"; }  ?>" alt="<?php echo "$name" ?>" style="min-width:40px;max-width: 60px;max-height: 40px;">
                         </div>
+                        <div class="col">
+                          <h6 class="pt-2 fw-bold"><?php echo "$name" ?></h6>
+                          <p class="text-muted"><i class="fas fa-map-pin" style="color:#ca0000"></i><?php echo "$address - $type" ?></p>
+                        </div>
+                        
+                      </div>
                     </a>
                 <?php
                 }

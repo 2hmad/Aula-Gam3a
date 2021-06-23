@@ -7,10 +7,7 @@
     <style>
         .container {
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            
         }
 
         .cont-form {
@@ -23,15 +20,15 @@
             flex-direction: column;
             justify-content: center;
             border-radius: 5px;
-            box-shadow: -1px 2px 13px 0px #e6e6e6;
+            box-shadow: -1px 2px 13px 0px white;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container" style = "max-width: 90%">
-        <form method="post">
+    <div class="container mt-5 bg-gray" style = "max-width: 90%">
+        <form method="post" class="bg-white">
             <div class="cont-form">
                 <div class="mb-3 row">
                     <label for="staticEmail" class="col-sm-3 col-form-label">البريد الالكتروني</label>

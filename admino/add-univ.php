@@ -42,6 +42,13 @@
             $sql = "INSERT INTO university (name, short_name, site_url, img, description, type, short_address, long_address, hotel_price) VALUES (?,?,?,?,?,?,?,?,?)";
             $stmt = $connect->prepare($sql);
             $connect->prepare($sql)->execute([$name, $short_name, $url, $univ_image, $desc, $kind, $short_title, $long_title, $hotel]);
+            
+            $last_id = $connect->lastInsertId();
+            $sql = "INSERT INTO log (admin_email, type, f_or_univ, target_id, description ) VALUES (?,?,?,?,?)";
+            $stmt = $connect->prepare($sql);
+            $connect->prepare($sql)->execute([ $_SESSION['email'] , 'add', 'univ', $last_id ,
+            $_SESSION['email'] . ' add university ' . $name 
+            ]);
 
             echo "<div class='alert alert-success' style='width:100%;margin-top:3%'>
               تم اضافة الجامعة بفضل الله بنجاح
@@ -57,7 +64,7 @@
             <label>رابط موقع الجامعه</label>
             <input type="url" name="url" required>
             <label>رابط لوقو الجامعة</label>
-            <input type="text" style ="direction: ltr;text-align: left" name="univ-image" placeholder="/logos/logo_name" required>
+            <input type="text" style ="direction: ltr;text-align: left" name="univ-image" placeholder="/logos/logo_name.png" required>
             <label>الوصف</label>
             <textarea id="desc" name="desc"></textarea>
             <label>نوع الجامعه</label>
@@ -69,6 +76,8 @@
                 <option>دولية الجديدة بالعاصمة  الادارية الجديدة</option>
                 <option>اكادمية</option>
                 <option>المعاهد</option>
+                <option> طيران </option>
+                <option> ضيافة جوية </option>
             </select>
             <label>العنوان القصير (المدينة) </label>
             <input type="text" name="short-title" required>

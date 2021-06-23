@@ -16,36 +16,65 @@
 
     <div class="container" style="margin-top: 4%;">
         <div class="row" style="text-align:center">
-            <h5 style="font-weight:bold;font-size: 1.1rem;margin-bottom: 2%;text-align:center">اختصارات الروابط</h5>
+            <h5 style="font-weight:bold;font-size: 1.1rem;margin-bottom: 2%;text-align:center">اختصارات الروابط
+            <a href = "logs.php"> . </a>
+            </h5>
             <div class="col-lg">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" onclick="window.location.href='./add-univ.php'"><i
+                <div class="row">
+                    <button class="col btn btn-primary m-1 " onclick="window.location.href='./add-univ.php'"><i
                             class="fas fa-plus" style="font-size: 15px;"></i> اضافة جامعه</button>
-                    <button class="btn btn-secondary" onclick="window.location.href='./add-fac.php'"><i
+                    <button class="col btn btn-secondary m-1 " onclick="window.location.href='./add-fac.php'"><i
                             class="fas fa-plus" style="font-size: 15px;"></i> اضافة كلية</button>
-                    <button class="btn btn-warning mb-3" onclick="window.location.href='./add-field.php'"><i
+                    <button class="col btn btn-warning m-1" onclick="window.location.href='./add-field.php'"><i
                             class="fas fa-plus" style="font-size: 15px;"></i> اضافة مجال دراسة</button>
                 </div>
             </div>
             <hr>
             <div class="col-lg">
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" onclick="window.location.href='./edit-univ.php'"><i
-                            class="fas fa-edit" style="font-size: 15px;"></i> تعديل جامعه</button>
-                    <button class="btn btn-secondary" onclick="window.location.href='./edit-fac.php'"><i
-                            class="fas fa-edit" style="font-size: 15px;"></i> تعديل كلية</button>
+                 
                     <button class="btn btn-warning" onclick="window.location.href='./edit-field.php'"><i
                             class="fas fa-edit" style="font-size: 15px;"></i> تعديل مجال دراسة</button>
+                  
+                    <button class="btn btn-primary" onclick="window.location.href='./logs.php'">
+                      
+                         سجل نشاط الادخال   
+                    </button>
+                
+                    <button class="btn btn-success" onclick="window.location.href='./tasks.php'">
+                 
+                      المهام 
+                    </button>
+                
                 </div>
+            </div>
+            
+            <div class = "alert alert-warning mt-1">
+              <p class="fw-bold d-block">
+                ايه الجديد ؟
+              </p>
+              
+              <p class="text-muted">
+                
+               ☕ تم اضافه حقل وصف الكلية الحمد لله ،لإضافه اي معلومات عن الكليه كتابتاً
+                
+                 <br><br>
+                 تم الحمد لله يشباب عمل صفحتين ، الاولي فيها سجل ايه الي حصل  من ادخال وتعديل من الادمنز ، 
+                 <br><br>
+                ، 
+                اما الصفحة التانية فيها صفحة للمهمات ،زي وسيله تواصل نكتب فيها لبعض اقتراحات كل واحد يعمل ايه، بحيث ننظم الحوار اكتر 
+                <br>
+                وعظمه إن شاء الله 
+              </p>
             </div>
         </div>
 
         <div class="suggestions">
             <div class="container_fluid">
-                <p style="text-align:center;font-weight: bold;font-size:17px">بعض الجامعات وكلياتها</p>
+                <p style="text-align:center;font-weight: bold;font-size:17px">كل الجامعات وكلياتها</p>
                 <div class="row" style="gap: 15px">
                     <?php
-                    $sql = "SELECT * FROM university ORDER BY id DESC LIMIT 5";
+                    $sql = "SELECT * FROM university ORDER BY id DESC ";
                     $query = $connect->query($sql);
                     $query->setFetchMode(PDO::FETCH_ASSOC);
                     while ($row = $query->fetch()) {
@@ -55,10 +84,16 @@
                         $address = $row['short_address'];
                         echo '
                         <div class="table-responsive">
+                        
+                        <p class = "fw-bold bg-muted rounded m-1 p-1" >
+                         '
+                         . $name . 
+                         
+                         '</p>
                         <table class="table table-hover" style="width: 100%;table-layout: fixed;">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="width: 130px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><span>' . $name . '</span></th>
+                                    <th scope="col" style="width: 130px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"><span> ' . $name . ' </span></th>
                                     <th scope="col"> <i class="fas fa-money-bill-wave"></i> </th>
                                     <th scope="col"> % </th>
                                     <th scope="col"><a href="edit-univ.php?u='.$name.'"><i class="fas fa-edit"></i> </a></th>
@@ -79,7 +114,7 @@
                                         <td>' . $name_f . '</td>
                                         <td>' . $price_f . '</td>
                                         <td>' . $min_f . ' % </td>
-                                        <td><a href="edit-fac.php?f=' . $name_f . '"><i class="fas fa-edit"></i></a></td>
+                                        <td><a href="edit-fac.php?f_id=' . $id_f . '"><i class="fas fa-edit"></i></a></td>
                                     </tr>
                                     ';
                         }

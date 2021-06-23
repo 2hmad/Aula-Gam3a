@@ -43,9 +43,6 @@
 			        اذهب الي الصفحة الرئيسية
 			        
 			   </a>
-			      
-
-					
 
 					<br>
 
@@ -56,6 +53,11 @@
             <ul>
               <li>
                 محمود - المنشئ بفضل الله
+              </li>
+              <li>
+                <a href = "https://mostaql.com/u/mabdelsattar_94">
+                  محمد السيد - مُجمع بيانات الجامعات 
+                </a>
               </li>
               <li>
                 <a href = "https://mostaql.com/u/Abanoub_Joseph">

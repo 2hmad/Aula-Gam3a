@@ -29,129 +29,130 @@
         <form method="POST" style="width: 550px;max-width:100%;display: flex;flex-direction: column;gap:10px">
 
             <?php
-            if (!isset($_GET['f'])) {
-            ?>
+            
+              $f_id = $_GET['f_id'];
+              $sql = "SELECT * FROM faculty WHERE id='$f_id'";
+              $query = $connect->query($sql);
+              $query->setFetchMode(PDO::FETCH_ASSOC);
+              while ($row = $query->fetch()) {
+                  $name = $row['name'];
+                  $university_id = $row['university_id'];
+                  $science_field_id = $row['science_field_id'];
+                  $minimum_total = $row['minimum_total'];
+                  $internal_total = $row['internal_total'];
+                  $price = $row['price'];
+                  $price_details = $row['price_details'];
+                  $updated_at = $row['updated_at'];
+                  $description = $row['description'];
+                  $img = $row['img'];
 
-            <label>الكلية</label>
-            <select name="faculty" id="faculty" placeholder="اختر الكلية">
-                <option value="">اختر الكلية</option>
-                <?php
-                    $sql = "SELECT * FROM faculty";
-                    $query = $connect->query($sql);
-                    $query->setFetchMode(PDO::FETCH_ASSOC);
-                    while ($row = $query->fetch()) {
-                        $name = $row['name'];
-                        echo '<option>' . $name . '</option>';
-                    }
-                    ?>
-            </select>
-            <input type="submit" name="next" value="الخطوة التالية" class="btn btn-primary">
-            <?php
-                if (isset($_POST['next'])) {
-                    $name = $_POST['faculty'];
-                    header('Location: ' . $_SERVER['REQUEST_URI'] . "?f=" . $name);
-                }
-            } else {
-                $f = $_GET['f'];
-                $sql = "SELECT * FROM faculty WHERE name='$f'";
-                $query = $connect->query($sql);
-                $query->setFetchMode(PDO::FETCH_ASSOC);
-                while ($row = $query->fetch()) {
-                    $name = $row['name'];
-                    $university_id = $row['university_id'];
-                    $science_field_id = $row['science_field_id'];
-                    $minimum_total = $row['minimum_total'];
-                    $internal_total = $row['internal_total'];
-                    $price = $row['price'];
-                    $updated_at = $row['updated_at'];
-                    $refer = $row['refer'];
-                    $img = $row['img'];
+                  echo '
+                  <label>اسم الكلية</label>
+                  <input type="text" name="name" value="' . $name . '">                
+                  <label>مجال الدراسة</label>
+                  <select name="field">
+                  ';
+                  $sql_s = $connect->query("SELECT * FROM science_field");
+                  $science = $sql_s->fetchAll();
+                  foreach ($science as $sciences) {
+                      $sql_f = $connect->query("SELECT * FROM science_field WHERE id='$science_field_id'");
+                      $science = $sql_f->fetchAll();
+                      foreach ($science as $science) {
+                          echo '<option value="' . $science['id'] . '" hidden>' . $science['name'] . '</option>';
+                          echo '<option value="' . $sciences['id'] . '">' . $sciences['name'] . '</option>';
+                      }
+                  }
+                  echo '
+                  </select>
+                  <label>الحد الادني للمجموع</label>
+                  <input type="number" step="0.01" name="minimum" value="' . $minimum_total . '">
+                  <label>التنسيق الداخلي</label>
+                  <input type="number" step="0.01" name="min-section" value="' . $internal_total . '">
+                  
+                  <label>المصاريف في السنه (وليس الترم) </label>
+                  <input type="text" name="cost" value="' . $price . '">
+                  
+                  <br>
+                  <label> 
+                    تفاصيل السعر 
+                    <small>
+                      (في حاله كان مُعتمد ع المجموع مثلا)
+                    </small>
+                  </label>
+                  <textarea name="price_details">' . $price_details . '</textarea>
+                  
+                  <label>صورة الكلية</label>
+                  <input type="text" style ="direction: ltr;text-align: left" name="img" value="' . $img . '">
+                  <label>تاريخ تحديث السعر والحد الادني</label>
+                  <input type="date" name="edit-date" value="' . $updated_at . '">
+                  <label> وصف الكلية <label>
+                  <textarea id="description" name="description" placeholder = " اي معلومات اضافيه عنها " >' . $description . '</textarea>
+                  <input type="submit" name="edit-fac" value="تعديل الكلية" class="btn btn-primary">
+                  <input type="button" value="حذف الكلية" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
 
-                    echo '
-                    <label>اسم الكلية</label>
-                    <input type="text" name="name" value="' . $name . '">                
-                    <label>مجال الدراسة</label>
-                    <select name="field">
-                    ';
-                    $sql_s = $connect->query("SELECT * FROM science_field");
-                    $science = $sql_s->fetchAll();
-                    foreach ($science as $sciences) {
-                        $sql_f = $connect->query("SELECT * FROM science_field WHERE id='$science_field_id'");
-                        $science = $sql_f->fetchAll();
-                        foreach ($science as $science) {
-                            echo '<option value="' . $science['id'] . '" hidden>' . $science['name'] . '</option>';
-                            echo '<option value="' . $sciences['id'] . '">' . $sciences['name'] . '</option>';
-                        }
-                    }
-                    echo '
-                    </select>
-                    <label>الحد الادني للمجموع</label>
-                    <input type="number" step="0.01" name="minimum" value="' . $minimum_total . '">
-                    <label>التنسيق الداخلي</label>
-                    <input type="number" step="0.01" name="min-section" value="' . $internal_total . '">
-                    <label>المصاريف</label>
-                    <input type="number" step="0.01" name="cost" value="' . $price . '">
-                    <label>صورة الكلية</label>
-                    <input type="text" style ="direction: ltr;text-align: left" name="img" value="' . $img . '">
-                    <label>تاريخ تحديث السعر والحد الادني</label>
-                    <input type="date" name="edit-date" value="' . $updated_at . '">
-                    <label>المراجع</label>
-                    <textarea id="references" name="references">' . $refer . '</textarea>
-                    <input type="submit" name="edit-fac" value="تعديل الكلية" class="btn btn-primary">
-                    <input type="button" value="حذف الكلية" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">متأكد من عملية الحذف ؟</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          هل انت متأكد ؟
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                          <button type="submit" name="delete-fac" class="btn btn-primary">تأكيد</button>
+                      </div>
+                      </div>
+                  </div>
+                  </div>
+                  ';
+                  if (isset($_POST['edit-fac'])) {
+                      $name = $_POST['name'];
+                      $field = $_POST['field'];
+                      $min = $_POST['minimum'];
+                      $min_s = $_POST['min-section'];
+                      $price = $_POST['cost'];
+                      
+                      $price_details = $_POST['price_details'];
+                      
+                      $date = $_POST['edit-date'];
+                      $description = $_POST['description'];
+                      $img = $_POST['img'];
 
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">متأكد من عملية الحذف ؟</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            هل انت متأكد ؟
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                            <button type="submit" name="delete-fac" class="btn btn-primary">تأكيد</button>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                    ';
-                    if (isset($_POST['edit-fac'])) {
-                        $name = $_POST['name'];
-                        $field = $_POST['field'];
-                        $min = $_POST['minimum'];
-                        $min_s = $_POST['min-section'];
-                        $price = $_POST['cost'];
-                        $date = $_POST['edit-date'];
-                        $ref = $_POST['references'];
-                        $img = $_POST['img'];
-
-                        $count = $connect->prepare("UPDATE faculty SET
-                        name=?,
-                        science_field_id=?,
-                        minimum_total=?,
-                        internal_total=?,
-                        price=?,
-                        updated_at=?,
-                        refer=?,
-                        img=?
-                        WHERE name='$f'");
-                        $count->execute([$name, $field, $min, $min_s, $price, $date, $ref, $img]);
-
-                        echo "<div class='alert alert-success' style='width:100%;margin-top:3%'>تم تعديل بيانات الكلية</div>";
-                        header('refresh:2;url=dashboard.php');
-                    }
-                    if (isset($_POST['delete-fac'])) {
-                        $sql = "DELETE FROM faculty WHERE name='$f'";
-                        if ($connect->query($sql)) {
-                            echo "<script>alert('تم حذف الكلية بنجاح')</script>";
-                            header('Location: edit-fac.php');
-                        }
-                    }
-                }
-            }
+                      $count = $connect->prepare("UPDATE faculty SET
+                      name=?,
+                      science_field_id=?,
+                      minimum_total=?,
+                      internal_total=?,
+                      price=?,
+                      price_details=?, 
+                      updated_at=?,
+                      description=?,
+                      img=?
+                      WHERE id='$f_id'");
+                      $count->execute([$name, $field, $min, $min_s, $price,$price_details, $date, $description , $img]);
+                      
+                      $sql = "INSERT INTO log (admin_email, type, f_or_univ, target_id, description ) VALUES (?,?,?,?,?)";
+                      $stmt = $connect->prepare($sql);
+                      $connect->prepare($sql)->execute([ $_SESSION['email'] , 'edit', 'f', $f_id ,
+                      $_SESSION['email'] . ' edit fuculty  ' . $name 
+                      ]);
+                      
+                      
+                      echo "<div class='alert alert-success' style='width:100%;margin-top:3%'>تم تعديل بيانات الكلية</div>";
+                      header('Location: edit-fac.php?f_id='. $f_id );
+                  }
+                  if (isset($_POST['delete-fac'])) {
+                      $sql = "DELETE FROM faculty WHERE id='$f_id'";
+                      if ($connect->query($sql)) {
+                          echo "<script>alert('تم حذف الكلية بنجاح')</script>";
+                          header('Location: edit-fac.php');
+                      }
+                  }
+              }
+            
             ?>
         </form>
     </div>

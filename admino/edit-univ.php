@@ -54,6 +54,7 @@
                 $query = $connect->query($sql);
                 $query->setFetchMode(PDO::FETCH_ASSOC);
                 while ($row = $query->fetch()) {
+                    $id         = $row['id'];
                     $name = $row['name'];
                     $short_name = $row['short_name'];
                     $site_url = $row['site_url'];
@@ -65,6 +66,7 @@
                     $hotel_price = $row['hotel_price'];
 
                     echo '
+                    <input hidden type="text" name="id" value="' . $id . '">
                     <label>الأسم</label>
                     <input type="text" name="name" value="' . $name . '">
                     <label>الاسم المختصر</label>
@@ -80,6 +82,13 @@
                         <option value="' . $type . '" hidden>' . $type . '</option>
                         <option>خاصة</option>
                         <option>أهلية</option>
+                        <option>جامعة باتفاقيات دولية</option>
+                        <option>دولية الجديدة بالعاصمة  الادارية الجديدة</option>
+                        <option>اكادمية</option>
+                        <option>المعاهد</option>
+                        <option> طيران </option>
+                        <option> ضيافة جوية </option>
+                        <option> مراقبة جوية </option>
                     </select>
                     <label>العنوان القصير</label>
                     <input type="text" name="short-title" value="' . $short_address . '">
@@ -101,7 +110,7 @@
                             هل انت متأكد ؟
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                            <button type="button" name = "edit-univ" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
                             <button type="submit" name="delete-univ" class="btn btn-primary">تأكيد</button>
                         </div>
                         </div>
@@ -111,6 +120,7 @@
                     ';
 
                     if (isset($_POST['edit-univ'])) {
+                        $id = $_POST['id'];
                         $name = $_POST['name'];
                         $short_name = $_POST['short-name'];
                         $url = $_POST['url'];
@@ -122,20 +132,32 @@
                         $hotel = $_POST['hotel'];
 
                         $sql = "UPDATE university SET 
-                        name='$name',
-                        short_name='$short_name',
-                        site_url='$url',
-                        img='$univ_image',
-                        description='$desc',
-                        type='$kind',
-                        short_address='$short_address',
-                        long_address='$long_address',
-                        hotel_price='$hotel'
-                        WHERE name='$u'";
-                        $query = $connect->query($sql);
-                        if ($query) {
+                        name = ? ,
+                        short_name = ? ,
+                        site_url = ? ,
+                        img = ? ,
+                        description = ? ,
+                        type = ? ,
+                        short_address = ? ,
+                        long_address = ? ,
+                        hotel_price = ?
+                        WHERE id = ? ";
+                        
+                        //$query = $connect->query($sql);
+                        
+                        $stmt = $connect->prepare($sql);
+                        $connect->prepare($sql)->execute([$name, $short_name, $url, $univ_image, $desc, $kind, $short_address, $long_address, $hotel, $id]);
+            
+                        if ($connect) {
+                            
+                            $sql = "INSERT INTO log (admin_email, type, f_or_univ, target_id, description ) VALUES (?,?,?,?,?)";
+                            $stmt = $connect->prepare($sql);
+                            $connect->prepare($sql)->execute([ $_SESSION['email'] , 'edit', 'univ', $id ,
+                            $_SESSION['email'] . ' edit univ  ' . $name 
+                            ]);
+                      
                             echo "<div class='alert alert-success' style='width:100%;margin-top:3%'>تم تعديل بيانات الكلية</div>";
-                            header('refresh:2;url=dashboard.php');
+                            header('location: edit-univ.php?u=' . $name );
                         }
 
                     }
